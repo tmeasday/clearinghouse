@@ -1,0 +1,52 @@
+<head>
+</head>
+<body>
+  <form>
+    <label>Heading</label>
+    <input type="text" id="heading" placeholder="Enter Heading"></input>
+    <label>Choose References file</label>
+    <input type="file" id="references"></input>
+    <hr/>
+    <label>Output</label>
+    <textarea id="output" rows="100" style="width:100%"></textarea>
+  </form>
+
+  <script>
+    var heading = document.querySelector('#heading');
+    var output = document.querySelector('#output');
+
+    document.querySelector('#references').addEventListener('change', function(e) {
+      var file = e.target.files[0];
+      var reader = new FileReader();
+      reader.readAsText(file);
+
+      reader.onload = function(e) {
+        var html = e.target.result;
+
+        // remove leading junk
+        html = html.replace(/^[\S\s]*<body>/m, '');
+
+        // remove trailing junk
+        html = html.replace(/<\/body[\S\s]*$/m, '');
+
+        // substitute each <p> with </li><li>
+        html = html.replace(/<p>/g, '</li>\n<li>');
+
+        // remove final '<li>'
+        html = html.trim().replace(/<li>$/, '');
+
+        // add surrouding <ol>
+        html = '<ol>\n\n<li>' + html + '\n</ol>';
+
+        // add heading
+        var headingValue = heading.value;
+        if (headingValue) {
+          html = '<h3>' + headingValue + '</h3>\n' + html;
+        }
+
+        console.log(html)
+        output.value += html;
+      };
+    });
+  </script>
+</body>
