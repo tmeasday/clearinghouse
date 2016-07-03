@@ -36,13 +36,18 @@
           // add surrouding <ol>
           html = '<ol>\n\n<li>' + html + '\n</ol>';
 
-          // // add heading
-          // var headingValue = heading.value;
-          // if (headingValue) {
-          //   html = '<h3>' + headingValue + '</h3>\n' + html;
-          // }
 
-          output.value += file.name + '\n\n' + html + '\n\n';
+          // add top link
+          html += '<p><a href="#Top">Top</a></p>';
+
+          // add heading
+          var name = file.name.split('.')[0];
+          var anchor = name.replace(/\s/g, '_');
+          html = '<h2>' + name
+            + '<a id="' + anchor + '" title="NewBookmark" data-ektron-placeholder="bookmark"></a>'
+            + '</h2>\n' + html;
+
+          output.value += html + '\n\n';
         };
       });
     });
